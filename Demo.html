@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            list-style: none;
+        }
+        
+        #wrap {
+            width: 500px;
+            height: 281px;
+            position: relative;
+            line-height: 281px;
+            overflow: hidden;
+        }
+        
+        #wrap .ul1 {
+            width: 2000px;
+            height: 281px;
+            position: absolute;
+/*            left: 300px;*/
+            left: 0;
+        }
+        
+        #wrap .ul1 li {
+            width: 500px;
+            height: 281px;
+            float: left;
+        }
+        
+        #wrap .ul1 li img {
+            width: 500px;
+            height: 281px;
+        }
+        
+        #wrap span {
+            position: absolute;
+            display: block;
+            width: 50px;
+            height: 60px;
+            background: #f2f2f2;
+            opacity: 0.6;
+            text-align: center;
+            line-height: 60px;
+            margin-top: 110.5px;
+            cursor: pointer;
+        }
+        
+        #wrap span.left {
+            left: -65px;
+            margin-left: 15px;
+            z-index: 10;
+        }
+        
+        #wrap span.right {
+            right: -65px;
+            margin-right: 15px;
+        }
+        
+        #wrap .ol1 {
+            position: absolute;
+            bottom: 10px;
+            right: 5px;
+        }
+        
+        #wrap .ol1 li {
+            width: 10px;
+            height: 10px;
+            background: #8e8e8e;
+            float: left;
+            margin-right: 5px;
+            border-radius: 6px;
+            box-shadow: bottom 30px;
+        }
+        
+        #wrap .ol1 li.cur {
+            background: #c544ff;
+        }
+    </style>
+    <script src="Move.js"></script>
+    <script>
+        window.onload = function () {
+            var oWrap = document.getElementById('wrap');
+            var oBtnl = document.getElementById('left');
+            var oBtnr = document.getElementById('right');
+            var oUl = document.getElementById('ul1');
+            var aLi = oUl.getElementsByTagName('li');
+            var oWid = aLi[0].offsetWidth;
+            var oOl = document.getElementById('ol1');
+            var aLi2 = oOl.getElementsByTagName('li');
+            var now = 0;
+            var timer = null;
+            
+//            alert(oWid);
+            timeMove();
+            oWrap.onmouseover = function () {
+                Move(oBtnl, {'left': 0});
+                Move(oBtnr, {'right': 0});
+                clearInterval(timer);
+            };
+            
+            oWrap.onmouseout = function () {
+                Move(oBtnl, {'left': -65});
+                Move(oBtnr, {'right': -65});
+                timeMove();
+            };
+            
+            oBtnl.onclick = function (e) {
+                now--;
+                move();
+                return false;
+            };
+            
+            oBtnr.onclick = function (e) {
+                now++;
+                move();
+//                alert(now);
+                return false;
+            };
+            
+            
+            
+            function timeMove() {
+                timer = setInterval(function () {
+                now++;
+                move();
+                }, 3000);
+            };
+            
+            function move() {
+                if (now == 4) {
+                    now = 0;
+                } else if (now == -1) {
+                    now = 3;
+                };
+                document.title = now;
+                Move(oUl, {'left': -now * oWid});
+                for (var i = 0; i < aLi2.length; i++) {
+                    aLi2[i].className = '';
+                };
+                aLi2[now].className = 'cur';
+                
+            };
+        };
+    </script>
+</head>
+<body>
+    <div id="wrap">
+        <span id="left" class="left">&lArr;</span>
+        <ul id="ul1" class="ul1">
+            <li><img src="img/2.jpg" alt=""></li>
+            <li><img src="img/4.jpg" alt=""></li>
+            <li><img src="img/6.jpg" alt=""></li>
+            <li><img src="img/5.jpg" alt=""></li>
+        </ul>
+        <span id="right" class="right">&rArr;</span>
+        <ol id="ol1" class="ol1">
+            <li class="cur"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ol>
+    </div>
+</body>
+</html>
